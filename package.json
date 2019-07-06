@@ -1,0 +1,33 @@
+{
+  "name": "@bahmutov/all-logs",
+  "version": "1.0.0",
+  "description": "Capture all console logs",
+  "main": "src",
+  "private": false,
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "mocha --reporter spec test/spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahmutov/all-logs.git"
+  },
+  "keywords": [
+    "log",
+    "console",
+    "debug"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahmutov/all-logs/issues"
+  },
+  "homepage": "https://github.com/bahmutov/all-logs#readme",
+  "devDependencies": {
+    "execa-wrap": "1.4.0",
+    "mocha": "6.1.4",
+    "snap-shot-it": "7.8.0"
+  }
+}
