@@ -4,11 +4,15 @@ orbs:
 
 jobs:
   test:
-    - node/with-cache:
-        steps:
-          - run: npm t
+    docker:
+      - image: cypress/base:12.1.0
+    steps:
+      - node/with-cache:
+          steps:
+            - run: npm t
 
 workflows:
+  version: 2
   build:
     jobs:
       - test
