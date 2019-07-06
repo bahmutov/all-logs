@@ -13,6 +13,7 @@ jobs:
           steps:
             - run: npm ci
             - run: npm t
+            - run: npm run semantic-release
 
 workflows:
   version: 2
