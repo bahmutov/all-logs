@@ -1,9 +1,15 @@
 const util = require('util')
+const path = require('path')
+const stripAnsi = require('strip-ansi')
+
+const formatDebugMessage = (...args) => stripAnsi(util.format(...args))
 
 function logDebugCalls (messages) {
   // assume there is "debug" module, otherwise
   // do nothing (put try / catch around require)
-  const debug = require('debug')
+  // we also need to make sure we are loading SAME debug module as the caller code
+  const debugPath = path.join(process.cwd(), 'node_modules', 'debug')
+  const debug = require(debugPath)
 
   // All enabled debug instances by default use "debug.log" method
   // to actually write to process.stderr stream. Assume user code
@@ -12,7 +18,7 @@ function logDebugCalls (messages) {
   debug.log = (...args) => {
     messages.push({
       type: 'debug',
-      message: util.format(...args)
+      message: formatDebugMessage(...args)
     })
     // and call the original method to print it
     debugLog.apply(debug, args)
@@ -21,6 +27,9 @@ function logDebugCalls (messages) {
   // new instances are added using "debug.instances.push()"
   // so we can proxy this method
   debug.instances.push = debugInstance => {
+    // for debugging missing logs
+    // cnsl.log('pushing new debug instance %s', debugInstance.namespace)
+
     Array.prototype.push.call(debug.instances, debugInstance)
 
     if (debugInstance.enabled) {
@@ -35,7 +44,7 @@ function logDebugCalls (messages) {
     debugInstance.log = (...args) => {
       messages.push({
         type: 'debug',
-        message: util.format(...args)
+        message: formatDebugMessage(...args)
       })
     }
   }

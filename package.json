@@ -27,16 +27,23 @@
   },
   "homepage": "https://github.com/bahmutov/all-logs#readme",
   "devDependencies": {
+    "debug": "4.1.1",
     "execa-wrap": "1.4.0",
     "mocha": "6.1.4",
     "prettier": "1.18.2",
     "ramda": "0.26.1",
-    "snap-shot-it": "7.8.0",
-    "semantic-release": "^15.13.18"
+    "semantic-release": "^15.13.18",
+    "snap-shot-it": "7.8.0"
+  },
+  "peerDependencies": {
+    "debug": "4"
   },
   "config": {
     "snap-shot-it": {
       "sortSnapshots": true
     }
+  },
+  "dependencies": {
+    "strip-ansi": "5.2.0"
   }
 }
