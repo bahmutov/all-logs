@@ -3,10 +3,12 @@ const util = require('util')
 // ignore "console.table" and "console.dir" for now
 const methodNames = ['log', 'warn', 'error']
 
-// put all messages interleaved into single list
-// so we can see how they all appeared
-// each message should have "type" and "message"
-const messages = []
+/**
+ * put all messages interleaved into single list
+ * so we can see how they all appeared
+ * each message should have "type" and "message"
+ */
+global.messages = []
 /**
  * put the original log methods into a global object
  * so we can do two things:
@@ -26,7 +28,8 @@ methodNames.forEach(methodName => {
     const message = params.length
       ? util.format(arguments[0], ...params)
       : arguments[0]
-    messages.push({
+
+    global.messages.push({
       type: methodName, // "log", "warn", "error"
       message
     })
@@ -37,15 +40,27 @@ methodNames.forEach(methodName => {
 })
 
 // intercept "debug" module logging calls
-require('./log-debug')(messages)
+require('./log-debug')(global.messages)
 
 /**
  * A method to restore the original console methods
  */
 const restore = () => {
   Object.keys(global.cnsl).forEach(methodName => {
-    console.log = global.cnsl[methodName]
+    console[methodName] = global.cnsl[methodName]
   })
 }
 // add a method to "console" to restore the original non-proxied methods
 console.restore = restore
+
+// for unit testing
+if (process.env.PRINT_MESSAGES) {
+  process.on('beforeExit', () => {
+    restore()
+
+    console.log('*** printing saved messages ***')
+    messages.forEach(m => {
+      console.log('%s: %s', m.type, m.message)
+    })
+  })
+}

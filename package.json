@@ -29,5 +29,10 @@
     "execa-wrap": "1.4.0",
     "mocha": "6.1.4",
     "snap-shot-it": "7.8.0"
+  },
+  "config": {
+    "snap-shot-it": {
+      "sortSnapshots": true
+    }
   }
 }
