@@ -9,7 +9,9 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
+          dir: ~/.npm
           steps:
+            - run: npm ci
             - run: npm t
 
 workflows:
