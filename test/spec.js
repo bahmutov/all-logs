@@ -56,7 +56,11 @@ context('debug logs', () => {
       }
     })
 
-    return execa('node', ['--require', '..', './server-with-debug'], options).then(result => {
+    return execa(
+      'node',
+      ['--require', '..', './server-with-debug'],
+      options
+    ).then(result => {
       const noTimestampts = R.replace(timestampRegex, defaultTimestamp, result)
       snapshot('captured debug logs', noTimestampts)
     })

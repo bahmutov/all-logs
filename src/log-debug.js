@@ -8,7 +8,10 @@ function logDebugCalls (messages) {
   // assume there is "debug" module, otherwise
   // do nothing (put try / catch around require)
   // we also need to make sure we are loading SAME debug module as the caller code
-  const debugPath = path.join(process.cwd(), 'node_modules', 'debug')
+  // but make sure we can run from the "test" folder in this repo
+  const debugPath = process.cwd().endsWith('/test')
+    ? 'debug'
+    : path.join(process.cwd(), 'node_modules', 'debug')
   const debug = require(debugPath)
 
   // All enabled debug instances by default use "debug.log" method
