@@ -7,6 +7,7 @@ jobs:
     docker:
       - image: cypress/base:12.1.0
     steps:
+      - checkout
       - node/with-cache:
           steps:
             - run: npm t
