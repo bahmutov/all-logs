@@ -8,3 +8,6 @@ console.error('this is console error 🔥')
 
 // only visible when you call "NODE_DEBUG=verbose node ./test/server-with-util-debug"
 debug('this is verbose debug = %d', 42)
+
+// prints uppercase namespace + process id like this
+// VERBOSE 96315: this is verbose debug = 42
