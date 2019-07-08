@@ -66,3 +66,45 @@ context('debug logs', () => {
     })
   })
 })
+
+context('util.debuglog', () => {
+  // replace dynamic process id with same value
+  const pidRegex = /\d+: /g
+  const defaultPid = '999: '
+
+  it('prints NODE_DEBUG logs', () => {
+    const options = R.mergeDeepRight(execaOptions, {
+      env: {
+        NODE_DEBUG: 'verbose'
+      }
+    })
+
+    snapshot(
+      'merged NODE_DEBUG options',
+      R.assoc('cwd', 'path/to/test/folder', options)
+    )
+
+    return execa('node', ['./server-with-util-debug'], options).then(result => {
+      // replace PID values printed by "util.debuglog" calls
+      const noTimestampts = R.replace(pidRegex, defaultPid, result)
+      snapshot('enabled util.debuglog', noTimestampts)
+    })
+  })
+
+  it('collects all logs', () => {
+    const options = R.mergeDeepRight(execaOptions, {
+      env: {
+        NODE_DEBUG: 'verbose'
+      }
+    })
+
+    return execa(
+      'node',
+      ['--require', '..', './server-with-util-debug'],
+      options
+    ).then(result => {
+      const noTimestampts = R.replace(pidRegex, defaultPid, result)
+      snapshot('captured util.debuglog', noTimestampts)
+    })
+  })
+})

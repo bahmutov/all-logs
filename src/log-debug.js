@@ -1,3 +1,8 @@
+//
+// intercepts and logs messages going through NPM module "debug"
+// even the ones that are disabled right now
+//
+
 const util = require('util')
 const path = require('path')
 const stripAnsi = require('strip-ansi')

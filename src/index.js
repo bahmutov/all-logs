@@ -41,6 +41,8 @@ methodNames.forEach(methodName => {
 
 // intercept "debug" module logging calls
 require('./log-debug')(global.messages)
+// intercept all "util.debuglog" messages
+require('./log-util-debug')(global.messages)
 
 /**
  * A method to restore the original console methods

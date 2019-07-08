@@ -4,5 +4,5 @@ console.log('this is %s log message ✅', 'console')
 console.warn('this is console %s ⚠️', 'warn')
 console.error('this is console error 🔥')
 
-// only visible when you call "DEBUG=verbose node ./index-debug"
+// only visible when you call "DEBUG=verbose node ./test/server-with-debug"
 debug('this is verbose debug = %d', 42)
