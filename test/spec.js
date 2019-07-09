@@ -10,8 +10,8 @@ const execaOptions = {
   cwd: __dirname,
   filter: ['code', 'stdout', 'stderr'],
   env: {
-    PRINT_MESSAGES: '1'
-  }
+    PRINT_MESSAGES: '1',
+  },
 }
 context('console logs', () => {
   it('has server output', () => {
@@ -36,8 +36,8 @@ context('debug logs', () => {
   it('prints debug logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        DEBUG: 'verbose'
-      }
+        DEBUG: 'verbose',
+      },
     })
 
     snapshot('merged options', R.assoc('cwd', 'path/to/test/folder', options))
@@ -52,8 +52,8 @@ context('debug logs', () => {
   it('collects enabled logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        DEBUG: 'verbose'
-      }
+        DEBUG: 'verbose',
+      },
     })
 
     return execa(
@@ -75,8 +75,8 @@ context('util.debuglog', () => {
   it('prints NODE_DEBUG logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        NODE_DEBUG: 'verbose'
-      }
+        NODE_DEBUG: 'verbose',
+      },
     })
 
     snapshot(
@@ -94,8 +94,8 @@ context('util.debuglog', () => {
   it('collects all logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        NODE_DEBUG: 'verbose'
-      }
+        NODE_DEBUG: 'verbose',
+      },
     })
 
     return execa(

@@ -9,7 +9,7 @@ const stripAnsi = require('strip-ansi')
 
 const formatDebugMessage = (...args) => stripAnsi(util.format(...args))
 
-function logDebugCalls (messages) {
+const logDebugCalls = messages => {
   // assume there is "debug" module, otherwise
   // do nothing (put try / catch around require)
   // we also need to make sure we are loading SAME debug module as the caller code

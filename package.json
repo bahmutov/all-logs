@@ -5,11 +5,13 @@
   "main": "src",
   "private": false,
   "files": [
-    "src"
+    "src",
+    "middleware"
   ],
   "scripts": {
     "test": "mocha --reporter spec test/spec.js",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "prettier": "prettier --write 'src/*.js' 'test/*.js' 'middleware/*.js'"
   },
   "repository": {
     "type": "git",

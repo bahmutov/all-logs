@@ -10,17 +10,17 @@ const originalDebuglog = util.debuglog
 
 const formatUtilDebugMessage = (...args) => util.format(...args)
 
-function logUtilDebugCalls (messages) {
-  util.debuglog = function (namespace) {
+function logUtilDebugCalls(messages) {
+  util.debuglog = function(namespace) {
     const name = namespace.toUpperCase()
     const pid = process.pid
     const prefix = name + ' ' + pid + ': '
     const log = originalDebuglog(namespace)
 
-    return function proxyLog (...args) {
+    return function proxyLog(...args) {
       messages.push({
         type: 'util.debuglog',
-        message: prefix + formatUtilDebugMessage(...args)
+        message: prefix + formatUtilDebugMessage(...args),
       })
 
       return log(...args)
