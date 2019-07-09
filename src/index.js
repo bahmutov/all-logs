@@ -21,7 +21,7 @@ global.cnsl = {}
 methodNames.forEach(methodName => {
   const originalMethod = (global.cnsl[methodName] = console[methodName])
 
-  console[methodName] = function() {
+  console[methodName] = () => {
     // save the original message (formatted into a single string)
     // use "util.format" to perform string formatting if needed
     const params = Array.prototype.slice.call(arguments, 1)
@@ -31,7 +31,7 @@ methodNames.forEach(methodName => {
 
     global.messages.push({
       type: methodName, // "log", "warn", "error"
-      message,
+      message
     })
 
     // call the original method like "console.log"
