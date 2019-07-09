@@ -8,6 +8,20 @@ This module captures:
 - all messages via [debug](https://github.com/visionmedia/debug) module
 - all messages via [util.debuglog](https://nodejs.org/api/util.html#util_util_debuglog_section)
 
+### Middleware
+
+To expose captured log messages, use the included middleware
+
+- for Express servers use [middleware/express.js](middleware/express.js)
+
+```js
+if (global.messages) {
+  require('@bahmutov/all-logs/middleware/express')(app)
+}
+```
+
+Which adds `GET|POST /__messages__` endpoint
+
 ## See more
 
 - Read ["Capture all the logs"](https://glebbahmutov.com/blog/capture-all-the-logs/)
