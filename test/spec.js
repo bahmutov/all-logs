@@ -24,7 +24,7 @@ context('console logs', () => {
     return execa('node', ['--require', '..', './server.js'], execaOptions).then(
       result => {
         snapshot('captured logs', result)
-      }
+      },
     )
   })
 })
@@ -59,7 +59,7 @@ context('debug logs', () => {
     return execa(
       'node',
       ['--require', '..', './server-with-debug'],
-      options
+      options,
     ).then(result => {
       const noTimestampts = R.replace(timestampRegex, defaultTimestamp, result)
       snapshot('captured debug logs', noTimestampts)
@@ -81,7 +81,7 @@ context('util.debuglog', () => {
 
     snapshot(
       'merged NODE_DEBUG options',
-      R.assoc('cwd', 'path/to/test/folder', options)
+      R.assoc('cwd', 'path/to/test/folder', options),
     )
 
     return execa('node', ['./server-with-util-debug'], options).then(result => {
@@ -101,7 +101,7 @@ context('util.debuglog', () => {
     return execa(
       'node',
       ['--require', '..', './server-with-util-debug'],
-      options
+      options,
     ).then(result => {
       const noTimestampts = R.replace(pidRegex, defaultPid, result)
       snapshot('captured util.debuglog', noTimestampts)

@@ -26,7 +26,7 @@ const logDebugCalls = messages => {
   debug.log = (...args) => {
     messages.push({
       type: 'debug',
-      message: formatDebugMessage(...args)
+      message: formatDebugMessage(...args),
     })
     // and call the original method to print it
     debugLog.apply(debug, args)
@@ -52,7 +52,7 @@ const logDebugCalls = messages => {
     debugInstance.log = (...args) => {
       messages.push({
         type: 'debug',
-        message: formatDebugMessage(...args)
+        message: formatDebugMessage(...args),
       })
     }
   }
