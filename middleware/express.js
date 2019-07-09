@@ -8,7 +8,7 @@ module.exports = app => {
     return
   }
 
-  const endpoint = '/__logs__'
+  const endpoint = '/__messages__'
   app.get(endpoint, (req, res) => {
     res.json({
       messages: global.messages
