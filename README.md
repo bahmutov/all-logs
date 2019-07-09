@@ -1,5 +1,13 @@
 # @bahmutov/all-logs [![CircleCI](https://circleci.com/gh/bahmutov/all-logs.svg?style=svg)](https://circleci.com/gh/bahmutov/all-logs)
 
+## Use
+
+This module captures:
+
+- `console.{log, warn, error}` messages
+- all messages via [debug](https://github.com/visionmedia/debug) module
+- all messages via [util.debuglog](https://nodejs.org/api/util.html#util_util_debuglog_section)
+
 ## See more
 
 - Read ["Capture all the logs"](https://glebbahmutov.com/blog/capture-all-the-logs/)
