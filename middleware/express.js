@@ -5,13 +5,13 @@
 module.exports = app => {
   if (!global.messages) {
     // there is no log collection
-    return next()
+    return
   }
 
   const endpoint = '/__logs__'
   app.get(endpoint, (req, res) => {
     res.json({
-      messages: global.messages,
+      messages: global.messages
     })
   })
 

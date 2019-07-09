@@ -21,13 +21,11 @@ global.cnsl = {}
 methodNames.forEach(methodName => {
   const originalMethod = (global.cnsl[methodName] = console[methodName])
 
-  console[methodName] = () => {
+  console[methodName] = (...args) => {
     // save the original message (formatted into a single string)
     // use "util.format" to perform string formatting if needed
-    const params = Array.prototype.slice.call(arguments, 1)
-    const message = params.length
-      ? util.format(arguments[0], ...params)
-      : arguments[0]
+    const params = Array.prototype.slice.call(args, 1)
+    const message = params.length ? util.format(args[0], ...params) : args[0]
 
     global.messages.push({
       type: methodName, // "log", "warn", "error"
@@ -35,7 +33,7 @@ methodNames.forEach(methodName => {
     })
 
     // call the original method like "console.log"
-    originalMethod.apply(console, arguments)
+    originalMethod.apply(console, args)
   }
 })
 
