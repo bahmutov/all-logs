@@ -20,6 +20,19 @@ if (global.messages) {
 }
 ```
 
+- for plain Node `http` server use [middleware/http.js](middleware/http.js)
+
+```js
+const http = require('http')
+const logs = require('@bahmutov/all-logs/middleware/http')
+http.createServer((req, res) => {
+  if (logs(req, res) === true) {
+    return
+  }
+  // your normal handler
+})
+```
+
 Which adds `GET|POST /__messages__` endpoint
 
 ## See more

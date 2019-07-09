@@ -1,5 +1,5 @@
 /**
- * Adds endpoint /__logs__ to Express server
+ * Adds an endpoint to Express server
  * that returns or resets all collected messages.
  */
 module.exports = app => {
