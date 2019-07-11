@@ -23,9 +23,10 @@ const logDebugCalls = messages => {
   // to actually write to process.stderr stream. Assume user code
   // does not change this, just save the message
   const debugLog = debug.log
-  debug.log = (...args) => {
+  debug.log = function(...args) {
     messages.push({
       type: 'debug',
+      namespace: this.namespace,
       message: formatDebugMessage(...args),
     })
     // and call the original method to print it
@@ -36,7 +37,7 @@ const logDebugCalls = messages => {
   // so we can proxy this method
   debug.instances.push = debugInstance => {
     // for debugging missing logs
-    // cnsl.log('pushing new debug instance %s', debugInstance.namespace)
+    // cnsl.log('pushing new debug instance with namespace "%s"', namespace)
 
     Array.prototype.push.call(debug.instances, debugInstance)
 
@@ -52,6 +53,7 @@ const logDebugCalls = messages => {
     debugInstance.log = (...args) => {
       messages.push({
         type: 'debug',
+        namespace: debugInstance.namespace,
         message: formatDebugMessage(...args),
       })
     }

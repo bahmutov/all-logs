@@ -4,10 +4,10 @@ exports['captured debug logs'] = `
   -------
   this is console log message ✅
   *** printing saved messages ***
-  log: this is console log message ✅
-  warn: this is console warn ⚠️
-  error: this is console error 🔥
-  debug: 2019-07-06T13:54:45.793Z verbose this is verbose debug = 42
+  console: log| this is console log message ✅
+  console: warn| this is console warn ⚠️
+  console: error| this is console error 🔥
+  debug: verbose| 2019-07-06T13:54:45.793Z verbose this is verbose debug = 42
   -------
   stderr:
   -------

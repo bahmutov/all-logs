@@ -22,8 +22,8 @@ module.exports = (req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' })
       res.end(
         JSON.stringify({
-          messages: global.messages
-        })
+          messages: global.messages,
+        }),
       )
       return true
     } else {

@@ -6,7 +6,7 @@ const methodNames = ['log', 'warn', 'error']
 /**
  * put all messages interleaved into single list
  * so we can see how they all appeared
- * each message should have "type" and "message"
+ * each message should have "type", "namespace" and "message"
  */
 global.messages = []
 /**
@@ -28,8 +28,9 @@ methodNames.forEach(methodName => {
     const message = params.length ? util.format(args[0], ...params) : args[0]
 
     global.messages.push({
-      type: methodName, // "log", "warn", "error"
-      message
+      type: 'console',
+      namespace: methodName, // "log", "warn", "error"
+      message,
     })
 
     // call the original method like "console.log"
@@ -60,7 +61,7 @@ if (process.env.PRINT_MESSAGES) {
 
     console.log('*** printing saved messages ***')
     messages.forEach(m => {
-      console.log('%s: %s', m.type, m.message)
+      console.log('%s: %s| %s', m.type, m.namespace, m.message)
     })
   })
 }

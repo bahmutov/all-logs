@@ -20,6 +20,7 @@ function logUtilDebugCalls(messages) {
     return function proxyLog(...args) {
       messages.push({
         type: 'util.debuglog',
+        namespace: name,
         message: prefix + formatUtilDebugMessage(...args),
       })
 
