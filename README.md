@@ -10,7 +10,7 @@ This module captures:
 
 ### Message format
 
-Each message object has type, namespace and the message text.
+Each message object has type, namespace and the message text. It also contains a timestamp as ISO string. See [src/index.d.ts](src/index.d.ts) for the exact interface definition.
 
 ### Middleware
 

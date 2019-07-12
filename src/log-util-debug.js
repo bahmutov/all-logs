@@ -30,6 +30,7 @@ function logUtilDebugCalls(messages) {
         type: 'util.debuglog',
         namespace: name,
         message: formatUtilDebugMessage(...args),
+        timestamp: new Date().toISOString(),
       })
 
       return log(...args)

@@ -1,4 +1,10 @@
 /**
+ * Alias for readability to ISO timestamp string.
+ * @example new Date().toISOString() // "2019-07-12T03:26:09.809Z"
+ */
+type isoTimeStamp = string
+
+/**
  * A message object with text and meta information.
  */
 interface Message {
@@ -15,6 +21,10 @@ interface Message {
    * The actual text
    */
   message: string
+  /**
+   * Message timestamp, ISO string like "2019-07-12T03:26:09.809Z"
+   */
+  timestamp: isoTimeStamp
 }
 
 declare global {

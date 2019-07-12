@@ -41,6 +41,7 @@ methodNames.forEach(methodName => {
       type: 'console',
       namespace: methodName, // "log", "warn", "error"
       message,
+      timestamp: new Date().toISOString(),
     })
 
     // call the original method like "console.log"

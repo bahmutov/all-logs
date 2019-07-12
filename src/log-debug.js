@@ -62,6 +62,7 @@ const logDebugCalls = messages => {
       type: 'debug',
       namespace: this.namespace,
       message: formatDebugMessage(this.namespace, ...args),
+      timestamp: new Date().toISOString(),
     })
     // and call the original method to print it
     debugLog.apply(debug, args)
@@ -92,6 +93,7 @@ const logDebugCalls = messages => {
         type: 'debug',
         namespace: debugInstance.namespace,
         message: formatDebugMessage(debugInstance.namespace, ...args),
+        timestamp: new Date().toISOString(),
       })
     }
   }
