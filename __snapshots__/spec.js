@@ -24,9 +24,9 @@ exports['captured logs'] = `
   -------
   this is console log message ✅
   *** printing saved messages ***
-  log: this is console log message ✅
-  warn: this is console warn ⚠️
-  error: this is console error 🔥
+  console: log| this is console log message ✅
+  console: warn| this is console warn ⚠️
+  console: error| this is console error 🔥
   -------
   stderr:
   -------
