@@ -12,7 +12,9 @@
     "test": "mocha --reporter spec test/spec.js",
     "semantic-release": "semantic-release",
     "prettier": "prettier --write 'src/*.js' 'test/*.js' 'middleware/*.js'",
-    "lint": "npm run prettier"
+    "lint": "npm run prettier",
+    "stop-only": "stop-only --folder test",
+    "warn-only": "stop-only --warn --folder test"
   },
   "repository": {
     "type": "git",
@@ -38,7 +40,8 @@
     "prettier": "1.18.2",
     "ramda": "0.26.1",
     "semantic-release": "^15.13.18",
-    "snap-shot-it": "7.8.0"
+    "snap-shot-it": "7.8.0",
+    "stop-only": "3.0.1"
   },
   "peerDependencies": {
     "debug": "4"
@@ -53,7 +56,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run warn-only",
+      "pre-push": "npm run warn-only"
     }
   },
   "lint-staged": {
