@@ -3,11 +3,15 @@
 // even the ones that are disabled right now
 //
 
+/// <reference path="./index.d.ts" />
+// @ts-check
+
 const util = require('util')
 const path = require('path')
 const stripAnsi = require('strip-ansi')
 const utils = require('./utils')
 
+// @ts-ignore
 const toText = (...args) => stripAnsi(util.format(...args))
 // TODO unit test this function
 const formatDebugMessage = (namespace, ...args) => {
@@ -32,6 +36,12 @@ const formatDebugMessage = (namespace, ...args) => {
   return text
 }
 
+/**
+ * Sets up proxying of log calls to "debug" module.
+ * Proxied messages will be added to the list passed by reference.
+ *
+ * @param {Message[]} messages Array of messages to add to
+ */
 const logDebugCalls = messages => {
   // assume there is "debug" module, otherwise
   // do nothing (put try / catch around require)
