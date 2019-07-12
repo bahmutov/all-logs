@@ -13,7 +13,7 @@ const execaOptions = {
     PRINT_MESSAGES: '1'
   }
 }
-context.only('console logs', () => {
+context('console logs', () => {
   it('has server output', () => {
     return execa('node', ['./server'], execaOptions).then(result => {
       snapshot('plain console logs', result)
