@@ -1,3 +1,5 @@
+/// <reference path="./index.d.ts" />
+// @ts-check
 const util = require('util')
 
 // ignore "console.table" and "console.dir" for now
@@ -7,8 +9,14 @@ const methodNames = ['log', 'warn', 'error']
  * put all messages interleaved into single list
  * so we can see how they all appeared
  * each message should have "type", "namespace" and "message"
+ *
+ * @type Message[]
  */
-global.messages = []
+const messages = []
+
+// @ts-ignore
+global.messages = messages
+
 /**
  * put the original log methods into a global object
  * so we can do two things:
@@ -16,10 +24,12 @@ global.messages = []
  *  2: print messages without going through proxied methods
  *      like "cnsl.log('my message')"
  */
-global.cnsl = {}
+const cnsl = {}
+// @ts-ignore
+global.cnsl = cnsl
 
 methodNames.forEach(methodName => {
-  const originalMethod = (global.cnsl[methodName] = console[methodName])
+  const originalMethod = (cnsl[methodName] = console[methodName])
 
   console[methodName] = (...args) => {
     // save the original message (formatted into a single string)
@@ -27,7 +37,7 @@ methodNames.forEach(methodName => {
     const params = Array.prototype.slice.call(args, 1)
     const message = params.length ? util.format(args[0], ...params) : args[0]
 
-    global.messages.push({
+    messages.push({
       type: 'console',
       namespace: methodName, // "log", "warn", "error"
       message,
@@ -39,19 +49,20 @@ methodNames.forEach(methodName => {
 })
 
 // intercept "debug" module logging calls
-require('./log-debug')(global.messages)
+require('./log-debug')(messages)
 // intercept all "util.debuglog" messages
-require('./log-util-debug')(global.messages)
+require('./log-util-debug')(messages)
 
 /**
  * A method to restore the original console methods
  */
 const restore = () => {
-  Object.keys(global.cnsl).forEach(methodName => {
-    console[methodName] = global.cnsl[methodName]
+  Object.keys(cnsl).forEach(methodName => {
+    console[methodName] = cnsl[methodName]
   })
 }
 // add a method to "console" to restore the original non-proxied methods
+// @ts-ignore
 console.restore = restore
 
 // for unit testing
