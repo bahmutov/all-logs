@@ -1,4 +1,4 @@
-# @bahmutov/all-logs [![CircleCI](https://circleci.com/gh/bahmutov/all-logs.svg?style=svg)](https://circleci.com/gh/bahmutov/all-logs)
+# @bahmutov/all-logs [![renovate-app badge][renovate-badge]][renovate-app] [![CircleCI](https://circleci.com/gh/bahmutov/all-logs.svg?style=svg)](https://circleci.com/gh/bahmutov/all-logs)
 
 ## Use
 
@@ -80,3 +80,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+
+[renovate-badge]: https://img.shields.io/badge/renovate-app-blue.svg
+[renovate-app]: https://renovateapp.com/
