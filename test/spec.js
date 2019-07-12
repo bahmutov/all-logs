@@ -1,6 +1,7 @@
 const snapshot = require('snap-shot-it')
 const execa = require('execa-wrap')
 const R = require('ramda')
+const utils = require('../src/utils')
 
 /**
  * Common options for all tests.
@@ -30,7 +31,6 @@ context('console logs', () => {
 })
 
 context('debug logs', () => {
-  const timestampRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/g
   const defaultTimestamp = '2019-07-06T13:54:45.793Z'
 
   it('prints debug logs', () => {
@@ -44,7 +44,11 @@ context('debug logs', () => {
 
     return execa('node', ['./server-with-debug'], options).then(result => {
       // replace timestamps produced by "debug" module
-      const noTimestampts = R.replace(timestampRegex, defaultTimestamp, result)
+      const noTimestampts = R.replace(
+        utils.timestampRegex,
+        defaultTimestamp,
+        result,
+      )
       snapshot('enabled debug logs', noTimestampts)
     })
   })
@@ -61,7 +65,11 @@ context('debug logs', () => {
       ['--require', '..', './server-with-debug'],
       options,
     ).then(result => {
-      const noTimestampts = R.replace(timestampRegex, defaultTimestamp, result)
+      const noTimestampts = R.replace(
+        utils.timestampRegex,
+        defaultTimestamp,
+        result,
+      )
       snapshot('captured debug logs', noTimestampts)
     })
   })

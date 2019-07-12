@@ -6,8 +6,31 @@
 const util = require('util')
 const path = require('path')
 const stripAnsi = require('strip-ansi')
+const utils = require('./utils')
 
-const formatDebugMessage = (...args) => stripAnsi(util.format(...args))
+const toText = (...args) => stripAnsi(util.format(...args))
+// TODO unit test this function
+const formatDebugMessage = (namespace, ...args) => {
+  let text = toText(...args).trim()
+  if (utils.timestampRegex.test(text)) {
+    // the message has timestamp + namespace + actual text
+    // remove timestamp and namespace
+    // timestamp has 24 characters plus space = 25
+    text = text.substr(25 + namespace.length + 1)
+  } else {
+    // the message has namespace + actual text + milliseconds
+    text = text.substr(namespace.length + 1)
+  }
+
+  const msMatches = text.match(utils.msRegex)
+  if (msMatches) {
+    // text + milliseconds
+    // remove the milliseconds part
+    text = text.substr(0, msMatches.index)
+  }
+
+  return text
+}
 
 const logDebugCalls = messages => {
   // assume there is "debug" module, otherwise
@@ -19,15 +42,16 @@ const logDebugCalls = messages => {
     : path.join(process.cwd(), 'node_modules', 'debug')
   const debug = require(debugPath)
 
-  // All enabled debug instances by default use "debug.log" method
-  // to actually write to process.stderr stream. Assume user code
-  // does not change this, just save the message
+  // original "debug.log" method
   const debugLog = debug.log
+  // All enabled debug instances by default use "debug.log" method
+  // to actually write to process.stderr stream. Assume the user code
+  // does not change this, just save the message.
   debug.log = function(...args) {
     messages.push({
       type: 'debug',
       namespace: this.namespace,
-      message: formatDebugMessage(...args),
+      message: formatDebugMessage(this.namespace, ...args),
     })
     // and call the original method to print it
     debugLog.apply(debug, args)
@@ -46,15 +70,18 @@ const logDebugCalls = messages => {
       // intercept that as well by using "setter" property
       return
     }
+
     // if the debug instance is disabled, the common "debug.log"
     // method is NOT going to be called. We DO want to record the message though
     // to enable test debugging
     debugInstance.enabled = true
+    debugInstance.useColors = false
+
     debugInstance.log = (...args) => {
       messages.push({
         type: 'debug',
         namespace: debugInstance.namespace,
-        message: formatDebugMessage(...args),
+        message: formatDebugMessage(debugInstance.namespace, ...args),
       })
     }
   }

@@ -7,7 +7,7 @@ exports['captured debug logs'] = `
   console: log| this is console log message ✅
   console: warn| this is console warn ⚠️
   console: error| this is console error 🔥
-  debug: verbose| 2019-07-06T13:54:45.793Z verbose this is verbose debug = 42
+  debug: verbose| this is verbose debug = 42
   -------
   stderr:
   -------
