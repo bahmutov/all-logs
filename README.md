@@ -8,6 +8,10 @@ This module captures:
 - all messages via [debug](https://github.com/visionmedia/debug) module
 - all messages via [util.debuglog](https://nodejs.org/api/util.html#util_util_debuglog_section)
 
+### Message format
+
+Each message object has type, namespace and the message text.
+
 ### Middleware
 
 To expose captured log messages, use the included middleware
