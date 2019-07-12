@@ -10,8 +10,8 @@ const execaOptions = {
   cwd: __dirname,
   filter: ['code', 'stdout', 'stderr'],
   env: {
-    PRINT_MESSAGES: '1'
-  }
+    PRINT_MESSAGES: '1',
+  },
 }
 context('console logs', () => {
   it('has server output', () => {
@@ -24,7 +24,7 @@ context('console logs', () => {
     return execa('node', ['--require', '..', './server.js'], execaOptions).then(
       result => {
         snapshot('captured logs', result)
-      }
+      },
     )
   })
 })
@@ -36,8 +36,8 @@ context('debug logs', () => {
   it('prints debug logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        DEBUG: 'verbose'
-      }
+        DEBUG: 'verbose',
+      },
     })
 
     snapshot('merged options', R.assoc('cwd', 'path/to/test/folder', options))
@@ -52,14 +52,14 @@ context('debug logs', () => {
   it('collects enabled logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        DEBUG: 'verbose'
-      }
+        DEBUG: 'verbose',
+      },
     })
 
     return execa(
       'node',
       ['--require', '..', './server-with-debug'],
-      options
+      options,
     ).then(result => {
       const noTimestampts = R.replace(timestampRegex, defaultTimestamp, result)
       snapshot('captured debug logs', noTimestampts)
@@ -75,13 +75,13 @@ context('util.debuglog', () => {
   it('prints NODE_DEBUG logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        NODE_DEBUG: 'verbose'
-      }
+        NODE_DEBUG: 'verbose',
+      },
     })
 
     snapshot(
       'merged NODE_DEBUG options',
-      R.assoc('cwd', 'path/to/test/folder', options)
+      R.assoc('cwd', 'path/to/test/folder', options),
     )
 
     return execa('node', ['./server-with-util-debug'], options).then(result => {
@@ -94,14 +94,14 @@ context('util.debuglog', () => {
   it('collects all logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
-        NODE_DEBUG: 'verbose'
-      }
+        NODE_DEBUG: 'verbose',
+      },
     })
 
     return execa(
       'node',
       ['--require', '..', './server-with-util-debug'],
-      options
+      options,
     ).then(result => {
       const noTimestampts = R.replace(pidRegex, defaultPid, result)
       snapshot('captured util.debuglog', noTimestampts)

@@ -11,7 +11,8 @@
   "scripts": {
     "test": "mocha --reporter spec test/spec.js",
     "semantic-release": "semantic-release",
-    "prettier": "prettier --write 'src/*.js' 'test/*.js' 'middleware/*.js'"
+    "prettier": "prettier --write 'src/*.js' 'test/*.js' 'middleware/*.js'",
+    "lint": "npm run prettier"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,8 @@
   "devDependencies": {
     "debug": "4.1.1",
     "execa-wrap": "1.4.0",
+    "husky": "3.0.0",
+    "lint-staged": "9.2.0",
     "mocha": "6.1.4",
     "prettier": "1.18.2",
     "ramda": "0.26.1",
@@ -47,5 +50,16 @@
   },
   "dependencies": {
     "strip-ansi": "5.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
