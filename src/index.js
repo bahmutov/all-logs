@@ -65,15 +65,3 @@ const restore = () => {
 // add a method to "console" to restore the original non-proxied methods
 // @ts-ignore
 console.restore = restore
-
-// for unit testing
-if (process.env.PRINT_MESSAGES) {
-  process.on('beforeExit', () => {
-    restore()
-
-    console.log('*** printing saved messages ***')
-    messages.forEach(m => {
-      console.log('%s: %s| %s', m.type, m.namespace, m.message)
-    })
-  })
-}

@@ -16,17 +16,23 @@ const execaOptions = {
 }
 context('console logs', () => {
   it('has server output', () => {
-    return execa('node', ['./server'], execaOptions).then(result => {
+    return execa(
+      'node',
+      ['--require', './print-on-exit', './server'],
+      execaOptions,
+    ).then(result => {
       snapshot('plain console logs', result)
     })
   })
 
   it('records console logs', () => {
-    return execa('node', ['--require', '..', './server.js'], execaOptions).then(
-      result => {
-        snapshot('captured logs', result)
-      },
-    )
+    return execa(
+      'node',
+      ['--require', '..', '--require', './print-on-exit', './server.js'],
+      execaOptions,
+    ).then(result => {
+      snapshot('captured logs', result)
+    })
   })
 })
 
@@ -42,7 +48,11 @@ context('debug logs', () => {
 
     snapshot('merged options', R.assoc('cwd', 'path/to/test/folder', options))
 
-    return execa('node', ['./server-with-debug'], options).then(result => {
+    return execa(
+      'node',
+      ['--require', './print-on-exit', './server-with-debug'],
+      options,
+    ).then(result => {
       // replace timestamps produced by "debug" module
       const noTimestampts = R.replace(
         utils.timestampRegex,
@@ -62,7 +72,13 @@ context('debug logs', () => {
 
     return execa(
       'node',
-      ['--require', '..', './server-with-debug'],
+      [
+        '--require',
+        '..',
+        '--require',
+        './print-on-exit',
+        './server-with-debug',
+      ],
       options,
     ).then(result => {
       const noTimestampts = R.replace(
@@ -92,7 +108,11 @@ context('util.debuglog', () => {
       R.assoc('cwd', 'path/to/test/folder', options),
     )
 
-    return execa('node', ['./server-with-util-debug'], options).then(result => {
+    return execa(
+      'node',
+      ['--require', './print-on-exit', './server-with-util-debug'],
+      options,
+    ).then(result => {
       // replace PID values printed by "util.debuglog" calls
       const noTimestampts = R.replace(pidRegex, defaultPid, result)
       snapshot('enabled util.debuglog', noTimestampts)
@@ -108,7 +128,13 @@ context('util.debuglog', () => {
 
     return execa(
       'node',
-      ['--require', '..', './server-with-util-debug'],
+      [
+        '--require',
+        '..',
+        '--require',
+        './print-on-exit',
+        './server-with-util-debug',
+      ],
       options,
     ).then(result => {
       const noTimestampts = R.replace(pidRegex, defaultPid, result)
