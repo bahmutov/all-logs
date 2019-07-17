@@ -1,12 +1,38 @@
 # @bahmutov/all-logs [![renovate-app badge][renovate-badge]][renovate-app] [![CircleCI](https://circleci.com/gh/bahmutov/all-logs.svg?style=svg)](https://circleci.com/gh/bahmutov/all-logs)
 
-## Use
+## Goal
 
 This module captures:
 
 - `console.{log, warn, error}` messages
 - all messages via [debug](https://github.com/visionmedia/debug) module
 - all messages via [util.debuglog](https://nodejs.org/api/util.html#util_util_debuglog_section)
+
+## Use
+
+```
+npm install --save @bahmutov/all-logs
+```
+
+Then load this module before your CLI / server code. I suggest just requiring it before your normal module. For example, if normally you start your server like:
+
+```json
+{
+  "scripts": {
+    "start": "node ./lib/server.js"
+  }
+}
+```
+
+Then you change it to simply be:
+
+```json
+{
+  "scripts": {
+    "start": "node -r @bahmutov/all-logs ./lib/server.js"
+  }
+}
+```
 
 ### Message format
 
