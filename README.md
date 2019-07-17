@@ -42,6 +42,7 @@ Which adds `GET|POST /__messages__` endpoint
 ## See more
 
 - Read ["Capture all the logs"](https://glebbahmutov.com/blog/capture-all-the-logs/)
+- This module can be used very well with [@bahmutov/cy-api](https://github.com/bahmutov/cy-api) command for Cypress end-to-end API testing
 
 ### Small print
 
