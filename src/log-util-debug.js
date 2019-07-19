@@ -8,21 +8,12 @@
 // @ts-check
 
 const util = require('util')
+const { removeNamespaceAndPid } = require('./utils')
 
 const originalDebuglog = util.debuglog
 
 // @ts-ignore
 const formatUtilDebugMessage = (...args) => util.format(...args)
-
-/**
- * Given a string like "VERBOSE 39127: this is verbose debug = 42"
- * removes everything including the first ":"
- * @param {string} s - the text message
- */
-const removeNamespaceAndPid = s => {
-  const colon = s.indexOf(': ')
-  return s.substr(colon + 2)
-}
 
 /**
  * Sets up proxying of log calls to "util.debuglog" methods.
@@ -58,6 +49,8 @@ function logUtilDebugCalls(messages) {
         // the namespace has been enabled, and we JUST logged
         // a wrong "console.error" message
         const lastMessage = messages[messages.length - 1]
+        global.cnsl.log('the last error message was %o', lastMessage)
+
         lastMessage.type = 'util.debuglog'
         lastMessage.namespace = name
         lastMessage.message = removeNamespaceAndPid(lastMessage.message)

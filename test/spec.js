@@ -3,6 +3,8 @@ const execa = require('execa-wrap')
 const R = require('ramda')
 const utils = require('../src/utils')
 
+require('mocha-banner').register()
+
 /**
  * Common options for all tests.
  * Run in this test folder, and capture only some output fields
@@ -137,28 +139,35 @@ context('util.debuglog', () => {
       ],
       options,
     ).then(result => {
-      console.log('##### raw log ####')
-      console.log(result)
-
       const replacedPid = R.replace(pidRegex, defaultPid, result)
-      console.log('##### sanitized log ####')
-      console.log(replacedPid)
-
       snapshot('captured util.debuglog', replacedPid)
     })
   })
 })
 
-context('timestampRegex', () => {
+describe('utils', () => {
   const utils = require('../src/utils')
 
-  it('detects timestamp', () => {
-    const strings = [
-      '2019-07-19T02:03:45.729Z compute 2 + 3 = 5',
-      '2019-07-19T02:03:45.827Z compute 5 + 10 = 15',
-      '2019-02-01 some other format',
-    ]
-    const detected = strings.map(s => utils.timestampRegex.test(s))
-    snapshot(R.zipObj(strings, detected))
+  context('timestampRegex', () => {
+    it('detects timestamp', () => {
+      const strings = [
+        '2019-07-19T02:03:45.729Z compute 2 + 3 = 5',
+        '2019-07-19T02:03:45.827Z compute 5 + 10 = 15',
+        '2019-02-01 some other format',
+      ]
+      const detected = strings.map(s => utils.timestampRegex.test(s))
+      snapshot(R.zipObj(strings, detected))
+    })
+  })
+
+  context('removeNamespaceAndPid', () => {
+    it('removes namespace and pid', () => {
+      const text = 'VERBOSE 177: this is verbose debug = 42'
+      const result = utils.removeNamespaceAndPid(text)
+      snapshot({
+        text,
+        result,
+      })
+    })
   })
 })
