@@ -54,12 +54,12 @@ context('debug logs', () => {
       options,
     ).then(result => {
       // replace timestamps produced by "debug" module
-      const noTimestampts = R.replace(
-        utils.timestampRegex,
+      const replacedTimestampts = R.replace(
+        new RegExp(utils.timestampExpression, 'g'),
         defaultTimestamp,
         result,
       )
-      snapshot('enabled debug logs', noTimestampts)
+      snapshot('enabled debug logs', replacedTimestampts)
     })
   })
 
@@ -119,7 +119,7 @@ context('util.debuglog', () => {
     })
   })
 
-  it('collects all logs', () => {
+  it.skip('collects all logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
         NODE_DEBUG: 'verbose',
@@ -137,8 +137,22 @@ context('util.debuglog', () => {
       ],
       options,
     ).then(result => {
-      const noTimestampts = R.replace(pidRegex, defaultPid, result)
-      snapshot('captured util.debuglog', noTimestampts)
+      const replacedTimestampts = R.replace(pidRegex, defaultPid, result)
+      snapshot('captured util.debuglog', replacedTimestampts)
     })
+  })
+})
+
+context('timestampRegex', () => {
+  const utils = require('../src/utils')
+
+  it('detects timestamp', () => {
+    const strings = [
+      '2019-07-19T02:03:45.729Z compute 2 + 3 = 5',
+      '2019-07-19T02:03:45.827Z compute 5 + 10 = 15',
+      '2019-02-01 some other format',
+    ]
+    const detected = strings.map(s => utils.timestampRegex.test(s))
+    snapshot(R.zipObj(strings, detected))
   })
 })
