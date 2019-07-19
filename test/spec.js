@@ -93,8 +93,8 @@ context('debug logs', () => {
 
 context('util.debuglog', () => {
   // replace dynamic process id with same value
-  const pidRegex = /\d+: /g
-  const defaultPid = '999: '
+  const pidRegex = / \d+: /g
+  const defaultPid = ' 999: '
 
   it('prints NODE_DEBUG logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
@@ -137,8 +137,14 @@ context('util.debuglog', () => {
       ],
       options,
     ).then(result => {
-      const replacedTimestampts = R.replace(pidRegex, defaultPid, result)
-      snapshot('captured util.debuglog', replacedTimestampts)
+      console.log('##### raw log ####')
+      console.log(result)
+
+      const replacedPid = R.replace(pidRegex, defaultPid, result)
+      console.log('##### sanitized log ####')
+      console.log(replacedPid)
+
+      snapshot('captured util.debuglog', replacedPid)
     })
   })
 })
