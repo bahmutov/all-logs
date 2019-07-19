@@ -119,7 +119,7 @@ context('util.debuglog', () => {
     })
   })
 
-  it.skip('collects all logs', () => {
+  it('collects all logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
         NODE_DEBUG: 'verbose',

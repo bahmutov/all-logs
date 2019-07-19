@@ -11,3 +11,6 @@ debug('this is verbose debug = %d', 42)
 
 // prints uppercase namespace + process id like this
 // VERBOSE 96315: this is verbose debug = 42
+
+// to print all captured messages run this program with
+// NODE_DEBUG=verbose node -r . -r ./test/print-on-exit.js ./test/server-with-util-debug
