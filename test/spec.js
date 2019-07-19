@@ -169,5 +169,14 @@ describe('utils', () => {
         result,
       })
     })
+
+    it('keeps original message if colon cannot be found', () => {
+      const text = 'this is normal message'
+      const result = utils.removeNamespaceAndPid(text)
+      snapshot({
+        text,
+        result,
+      })
+    })
   })
 })

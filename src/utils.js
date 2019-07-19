@@ -20,11 +20,15 @@ const msRegex = /\+\d+ms$/
 
 /**
  * Given a string like "VERBOSE 39127: this is verbose debug = 42"
- * removes everything including the first ":"
+ * removes everything including the first ":". If the colon cannot be found,
+ * returns the original string
  * @param {string} s - the text message
  */
 const removeNamespaceAndPid = s => {
   const colon = s.indexOf(': ')
+  if (colon === -1) {
+    return s
+  }
   return s.substr(colon + 2)
 }
 

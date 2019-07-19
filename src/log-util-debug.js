@@ -45,12 +45,27 @@ function logUtilDebugCalls(messages) {
       // possibly logged to "console.error" if the namespace is enabled
       const debugLogResult = log(...args)
 
-      if (debugEnvRegex.test(name)) {
+      const isLastMessageFromUtilLog = () => {
+        if (!messages.length) {
+          return false
+        }
+        const lastMessage = messages[messages.length - 1]
+        if (lastMessage.type !== 'console') {
+          return false
+        }
+        if (lastMessage.namespace !== 'error') {
+          return false
+        }
+        if (lastMessage.message.indexOf(name) !== 0) {
+          return false
+        }
+        return true
+      }
+
+      if (debugEnvRegex.test(name) && isLastMessageFromUtilLog()) {
         // the namespace has been enabled, and we JUST logged
         // a wrong "console.error" message
         const lastMessage = messages[messages.length - 1]
-        global.cnsl.log('the last error message was %o', lastMessage)
-
         lastMessage.type = 'util.debuglog'
         lastMessage.namespace = name
         lastMessage.message = removeNamespaceAndPid(lastMessage.message)
