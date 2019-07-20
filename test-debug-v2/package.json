@@ -1,0 +1,17 @@
+{
+  "name": "test-debug-v2",
+  "version": "1.0.0",
+  "description": "Test how we correctly proxy debug v2 log calls",
+  "main": "index.js",
+  "scripts": {
+    "test": "../node_modules/.bin/mocha",
+    "start": "DEBUG=debug-v2 node .",
+    "logs": "node -r .. -r ../test/print-on-exit ."
+  },
+  "keywords": [],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com> (https://glebbahmutov.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "debug": "2.6.9"
+  }
+}
