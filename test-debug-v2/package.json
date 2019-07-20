@@ -12,6 +12,6 @@
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com> (https://glebbahmutov.com/)",
   "license": "ISC",
   "devDependencies": {
-    "debug": "2.6.9"
+    "debug": "4.1.1"
   }
 }
