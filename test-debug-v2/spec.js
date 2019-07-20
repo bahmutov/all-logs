@@ -80,30 +80,26 @@ describe('debug@2', () => {
     })
   })
 
-  // it('collects enabled logs', () => {
-  //   const options = R.mergeDeepRight(execaOptions, {
-  //     env: {
-  //       DEBUG: 'verbose'
-  //     }
-  //   })
+  it('collects even disabled debug logs', () => {
+    // run execa with empty environment variables
+    // to disable debug module logs
+    const options = R.mergeDeepRight(execaOptions, {
+      env: {},
+      extendEnv: false,
+    })
 
-  //   return execa(
-  //     'node',
-  //     [
-  //       '--require',
-  //       '..',
-  //       '--require',
-  //       './print-on-exit',
-  //       './server-with-debug'
-  //     ],
-  //     options
-  //   ).then(result => {
-  //     const noTimestampts = R.replace(
-  //       utils.timestampRegex,
-  //       defaultTimestamp,
-  //       result
-  //     )
-  //     snapshot('captured debug logs', noTimestampts)
-  //   })
-  // })
+    return execa(
+      'node',
+      ['--require', '..', '--require', '../test/print-on-exit', '.'],
+      options,
+    ).then(result => {
+      // replace timestamps produced by "debug" module
+      const replacedTimestampts = R.replace(
+        new RegExp(utils.utcTimestampString, 'g'),
+        defaultTimestamp,
+        result,
+      )
+      snapshot(replacedTimestampts)
+    })
+  })
 })

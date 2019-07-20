@@ -39,3 +39,19 @@ exports['debug@2 collects enabled debug logs 1'] = `
   -------
 
 `
+
+exports['debug@2 collects even disabled debug logs 1'] = `
+  code: 0
+  stdout:
+  -------
+  making debug-v2 namespace call 1 = 1
+  *** printing saved messages ***
+  console: log| making debug-v2 namespace call 1 = 1
+  debug: debug-v2| this debug call should print 1 = 1
+  -------
+  stderr:
+  -------
+  
+  -------
+
+`

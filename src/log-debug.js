@@ -67,6 +67,33 @@ const formatDebugMessage = (namespace, ...args) => {
   return text
 }
 
+const enableLogMethod = messages => debugInstance => {
+  if (debugInstance.enabled) {
+    // ignore custom debugInstance.log method - we could
+    // intercept that as well by using "setter" property
+    return
+  }
+
+  // if the debug instance is disabled, the common "debug.log"
+  // method is NOT going to be called. We DO want to record the message though
+  // to enable test debugging
+  debugInstance.enabled = true
+  debugInstance.useColors = false
+
+  debugInstance.log = (...args) => {
+    messages.push({
+      type: 'debug',
+      namespace: debugInstance.namespace,
+      message: formatDebugMessage(debugInstance.namespace, ...args),
+      timestamp: new Date().toISOString(),
+    })
+  }
+}
+
+const proxyDebugV2 = (messages, createDebug) => {
+  createDebug.init = enableLogMethod(messages)
+}
+
 /**
  * Sets up a hook to catch ALL created debug instances.
  * Works with "debug" v3+
@@ -146,6 +173,8 @@ const proxyDebugModule = (messages, debugPath) => {
     // new instances are added using "debug.instances.push()"
     // so we can proxy this method
     return proxyDebugV3(messages, debug)
+  } else {
+    return proxyDebugV2(messages, debug)
   }
 }
 
