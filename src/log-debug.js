@@ -90,8 +90,17 @@ const enableLogMethod = messages => debugInstance => {
   }
 }
 
+/**
+ * Sets up hook to overwrite debug v2 instance log method.
+ */
 const proxyDebugV2 = (messages, createDebug) => {
-  createDebug.init = enableLogMethod(messages)
+  // we need to call the original debug factory "init" method
+  // that sets up some things on the instance, like "inspectOpts"
+  const originalInit = createDebug.init
+  createDebug.init = debugInstance => {
+    originalInit(debugInstance)
+    return enableLogMethod(messages)(debugInstance)
+  }
 }
 
 /**
