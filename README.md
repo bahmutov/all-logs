@@ -74,6 +74,12 @@ Which adds `GET|POST /__messages__` endpoint
 - Read ["Capture all the logs"](https://glebbahmutov.com/blog/capture-all-the-logs/)
 - This module can be used very well with [@bahmutov/cy-api](https://github.com/bahmutov/cy-api) command for Cypress end-to-end API testing
 
+## Development
+
+### Renovate
+
+We are using RenovateBot to keep dependencies up to date. Find the settings in [renovate.json](renovate.json) file. Note that we ignore module `debug` since we are testing this module with older versions in subfolders.
+
 ### Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2019
