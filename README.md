@@ -34,6 +34,10 @@ Then you change it to simply be:
 }
 ```
 
+### Note: when `debug` module is used in dependencies
+
+This module tries to discover `debug` module in the current module's dependencies, and in all its immediate production dependencies. If it is possible to proxy (older versions of `debug` module are not compatible), then their logs will be intercepted and you will see `debug` logs from both your application and its immediate dependencies.
+
 ### Message format
 
 Each message object has type, namespace and the message text. It also contains a timestamp as ISO string. See [src/index.d.ts](src/index.d.ts) for the exact interface definition.
