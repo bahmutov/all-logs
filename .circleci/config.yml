@@ -12,7 +12,13 @@ jobs:
           dir: ~/.npm
           steps:
             - run: npm ci
+            - run:
+                command: npm ci
+                working_directory: test-debug-v2
             - run: npm t
+            - run:
+                command: npm t
+                working_directory: test-debug-v2
             - run: npm run stop-only
             - run: npm run semantic-release
 
