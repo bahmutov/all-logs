@@ -105,26 +105,7 @@ const proxyDebugV3 = (messages, debug) => {
 
     Array.prototype.push.call(debug.instances, debugInstance)
 
-    if (debugInstance.enabled) {
-      // ignore custom debugInstance.log method - we could
-      // intercept that as well by using "setter" property
-      return
-    }
-
-    // if the debug instance is disabled, the common "debug.log"
-    // method is NOT going to be called. We DO want to record the message though
-    // to enable test debugging
-    debugInstance.enabled = true
-    debugInstance.useColors = false
-
-    debugInstance.log = (...args) => {
-      messages.push({
-        type: 'debug',
-        namespace: debugInstance.namespace,
-        message: formatDebugMessage(debugInstance.namespace, ...args),
-        timestamp: new Date().toISOString(),
-      })
-    }
+    enableLogMethod(messages)(debugInstance)
   }
 }
 
