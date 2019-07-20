@@ -17,9 +17,29 @@ const execaOptions = {
 }
 
 describe('debug@2', () => {
-  const defaultTimestamp = '2019-07-06T13:54:45.793Z'
+  // timestamp in the form "new Date().toUTCString()"
+  const defaultTimestamp = 'Sat, 20 Jul 2019 19:10:43 GMT'
 
-  it.only('prints enabled debug logs', () => {
+  it('does not print debug logs when disabled', () => {
+    const options = R.mergeDeepRight(execaOptions, {
+      // runs execa with empty environment variables
+      env: {},
+      extendEnv: false,
+    })
+
+    return execa('node', ['.'], options).then(result => {
+      // replace timestamps produced by "debug" module
+      const replacedTimestampts = R.replace(
+        new RegExp(utils.utcTimestampString, 'g'),
+        defaultTimestamp,
+        result,
+      )
+      // there should not be stderr - because "debug" module was not enabled
+      snapshot(replacedTimestampts)
+    })
+  })
+
+  it('prints enabled debug logs', () => {
     const options = R.mergeDeepRight(execaOptions, {
       env: {
         DEBUG: 'debug-v2',
@@ -28,14 +48,13 @@ describe('debug@2', () => {
     })
 
     return execa('node', ['.'], options).then(result => {
-      console.log(result)
       // replace timestamps produced by "debug" module
       const replacedTimestampts = R.replace(
-        new RegExp(utils.timestampExpression, 'g'),
+        new RegExp(utils.utcTimestampString, 'g'),
         defaultTimestamp,
         result,
       )
-      // snapshot('enabled debug logs', replacedTimestampts)
+      snapshot(replacedTimestampts)
     })
   })
 
