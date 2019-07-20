@@ -49,9 +49,6 @@
     "snap-shot-it": "7.8.0",
     "stop-only": "3.0.1"
   },
-  "peerDependencies": {
-    "debug": "4"
-  },
   "config": {
     "snap-shot-it": {
       "sortSnapshots": true

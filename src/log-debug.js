@@ -156,6 +156,7 @@ const logDebugCalls = messages => {
       proxyDebugModule(messages, debugPath)
     } catch (e) {
       // different debug module versions might not work with our current proxy methods
+      // @ts-ignore
       global.cnsl.warn('⚠️ could not proxy debug module', debugPath)
     }
   })
