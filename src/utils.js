@@ -12,6 +12,18 @@ const timestampExpression =
 const timestampRegex = new RegExp(timestampExpression)
 
 /**
+ * String for detecting "new Date().toUTCString()" like "Sat, 20 Jul 2019 18:56:12 GMT"
+ */
+const utcTimestampString =
+  '(:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\,\\s\\d{2}\\s(:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\sGMT'
+
+/**
+ * "debug" module v2 for non-TTY output (or with "DEBUG_COLORS=no") prints
+ * timestamps using "new Date().toUTCString()". This regular expression detects it.
+ */
+const utcTimestampRegex = new RegExp(utcTimestampString)
+
+/**
  * "debug" module for TTY output streams ends messages with
  * millisecond difference from the previous message like
  * "namespace my message +12ms"
@@ -35,6 +47,8 @@ const removeNamespaceAndPid = s => {
 module.exports = {
   timestampExpression,
   timestampRegex,
+  utcTimestampString,
+  utcTimestampRegex,
   msRegex,
   removeNamespaceAndPid,
 }

@@ -4,7 +4,7 @@
   "description": "Test how we correctly proxy debug v2 log calls",
   "main": "index.js",
   "scripts": {
-    "test": "../node_modules/.bin/mocha",
+    "test": "../node_modules/.bin/mocha spec",
     "start": "DEBUG=debug-v2 node .",
     "logs": "node -r .. -r ../test/print-on-exit ."
   },

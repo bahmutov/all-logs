@@ -143,8 +143,8 @@ const proxyDebugModule = (messages, debugPath) => {
 
   // new instances are added using "debug.instances.push()"
   // so we can proxy this method
-  global.cnsl.log('debug object is', debug)
-  global.cnsl.log('debug.enabled is', debug.enabled)
+  // global.cnsl.log('debug object is', debug)
+  // global.cnsl.log('debug.enabled is', debug.enabled)
 
   if (Array.isArray(debug.instances)) {
     return proxyDebugV3(messages, debug)
