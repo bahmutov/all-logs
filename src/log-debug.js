@@ -10,6 +10,39 @@ const util = require('util')
 const path = require('path')
 const stripAnsi = require('strip-ansi')
 const utils = require('./utils')
+const fs = require('fs')
+
+const findDebugForProdDependencies = () => {
+  if (!fs.existsSync('./package.json')) {
+    // not running from actual user process
+    return []
+  }
+  const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
+  const productionDependencies = pkg.dependencies || []
+  // console.log('pkg has prod dependencies %o', productionDependencies)
+
+  const debugPaths = Object.keys(productionDependencies)
+    .map(name => {
+      const potentialDebugPackage = path.join(
+        process.cwd(),
+        'node_modules',
+        name,
+        'node_modules',
+        'debug',
+      )
+      if (fs.existsSync(potentialDebugPackage)) {
+        // console.log(
+        //   'dep %s has its own debug module in %s',
+        //   name,
+        //   potentialDebugPackage
+        // )
+        return potentialDebugPackage
+      }
+    })
+    .filter(Boolean)
+
+  return debugPaths
+}
 
 // @ts-ignore
 const toText = (...args) => stripAnsi(util.format(...args))
@@ -37,21 +70,21 @@ const formatDebugMessage = (namespace, ...args) => {
 }
 
 /**
- * Sets up proxying of log calls to "debug" module.
- * Proxied messages will be added to the list passed by reference.
- *
- * @param {Message[]} messages Array of messages to add to
+ * List of already proxied debug modules to avoid
+ * double proxy
  */
-const logDebugCalls = messages => {
-  // assume there is "debug" module, otherwise
-  // do nothing (put try / catch around require)
-  // we also need to make sure we are loading SAME debug module as the caller code
-  // but make sure we can run from the "test" folder in this repo
-  const debugPath = process.cwd().endsWith('/test')
-    ? 'debug'
-    : path.join(process.cwd(), 'node_modules', 'debug')
-  const debug = require(debugPath)
+const proxiedDebugPaths = {}
 
+const proxyDebugModule = (messages, debugPath) => {
+  // global.cnsl.log('proxy debug module at', debugPath)
+  const resolvedPath = require.resolve(debugPath)
+  // global.cnsl.log('resolved path %s', resolvedPath)
+  if (proxiedDebugPaths[resolvedPath]) {
+    return
+  }
+  proxiedDebugPaths[resolvedPath] = true
+
+  const debug = require(debugPath)
   // original "debug.log" method
   const debugLog = debug.log
   // All enabled debug instances by default use "debug.log" method
@@ -97,6 +130,35 @@ const logDebugCalls = messages => {
       })
     }
   }
+}
+
+/**
+ * Sets up proxying of log calls to "debug" module.
+ * Proxied messages will be added to the list passed by reference.
+ *
+ * @param {Message[]} messages Array of messages to add to
+ */
+const logDebugCalls = messages => {
+  // assume there is "debug" module, otherwise
+  // do nothing (put try / catch around require)
+  // we also need to make sure we are loading SAME debug module as the caller code
+  // but make sure we can run from the "test" folder in this repo
+  const debugPath = process.cwd().endsWith('/test')
+    ? 'debug'
+    : path.join(process.cwd(), 'node_modules', 'debug')
+
+  proxyDebugModule(messages, debugPath)
+
+  // additionally
+  const debugPaths = findDebugForProdDependencies()
+  debugPaths.forEach(debugPath => {
+    try {
+      proxyDebugModule(messages, debugPath)
+    } catch (e) {
+      // different debug module versions might not work with our current proxy methods
+      global.cnsl.warn('⚠️ could not proxy debug module', debugPath)
+    }
+  })
 }
 
 module.exports = logDebugCalls
