@@ -77,12 +77,18 @@ const proxiedDebugPaths = {}
 
 const proxyDebugModule = (messages, debugPath) => {
   // global.cnsl.log('proxy debug module at', debugPath)
-  const resolvedPath = require.resolve(debugPath)
-  // global.cnsl.log('resolved path %s', resolvedPath)
-  if (proxiedDebugPaths[resolvedPath]) {
+  try {
+    const resolvedPath = require.resolve(debugPath)
+    // global.cnsl.log('resolved path %s', resolvedPath)
+    if (proxiedDebugPaths[resolvedPath]) {
+      return
+    }
+    proxiedDebugPaths[resolvedPath] = true
+  } catch (e) {
+    // could not load debug module for some reason,
+    // move on
     return
   }
-  proxiedDebugPaths[resolvedPath] = true
 
   const debug = require(debugPath)
   // original "debug.log" method
