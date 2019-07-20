@@ -70,6 +70,40 @@ const formatDebugMessage = (namespace, ...args) => {
 }
 
 /**
+ * Sets up a hook to catch ALL created debug instances.
+ * Works with "debug" v3+
+ */
+const proxyDebugV3 = (messages, debug) => {
+  debug.instances.push = debugInstance => {
+    // for debugging missing logs
+    // cnsl.log('pushing new debug instance with namespace "%s"', namespace)
+
+    Array.prototype.push.call(debug.instances, debugInstance)
+
+    if (debugInstance.enabled) {
+      // ignore custom debugInstance.log method - we could
+      // intercept that as well by using "setter" property
+      return
+    }
+
+    // if the debug instance is disabled, the common "debug.log"
+    // method is NOT going to be called. We DO want to record the message though
+    // to enable test debugging
+    debugInstance.enabled = true
+    debugInstance.useColors = false
+
+    debugInstance.log = (...args) => {
+      messages.push({
+        type: 'debug',
+        namespace: debugInstance.namespace,
+        message: formatDebugMessage(debugInstance.namespace, ...args),
+        timestamp: new Date().toISOString(),
+      })
+    }
+  }
+}
+
+/**
  * List of already proxied debug modules to avoid
  * double proxy
  */
@@ -109,32 +143,11 @@ const proxyDebugModule = (messages, debugPath) => {
 
   // new instances are added using "debug.instances.push()"
   // so we can proxy this method
-  debug.instances.push = debugInstance => {
-    // for debugging missing logs
-    // cnsl.log('pushing new debug instance with namespace "%s"', namespace)
+  global.cnsl.log('debug object is', debug)
+  global.cnsl.log('debug.enabled is', debug.enabled)
 
-    Array.prototype.push.call(debug.instances, debugInstance)
-
-    if (debugInstance.enabled) {
-      // ignore custom debugInstance.log method - we could
-      // intercept that as well by using "setter" property
-      return
-    }
-
-    // if the debug instance is disabled, the common "debug.log"
-    // method is NOT going to be called. We DO want to record the message though
-    // to enable test debugging
-    debugInstance.enabled = true
-    debugInstance.useColors = false
-
-    debugInstance.log = (...args) => {
-      messages.push({
-        type: 'debug',
-        namespace: debugInstance.namespace,
-        message: formatDebugMessage(debugInstance.namespace, ...args),
-        timestamp: new Date().toISOString(),
-      })
-    }
+  if (Array.isArray(debug.instances)) {
+    return proxyDebugV3(messages, debug)
   }
 }
 
