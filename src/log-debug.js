@@ -49,14 +49,12 @@ const toText = (...args) => stripAnsi(util.format(...args))
 // TODO unit test this function
 const formatDebugMessage = (namespace, ...args) => {
   let text = toText(...args).trim()
-  if (utils.timestampRegex.test(text)) {
-    // the message has timestamp + namespace + actual text
-    // remove timestamp and namespace
-    // timestamp has 24 characters plus space = 25
-    text = text.substr(25 + namespace.length + 1)
-  } else {
-    // the message has namespace + actual text + milliseconds
-    text = text.substr(namespace.length + 1)
+
+  // removes namespace or timestamp plus namespace
+  // from each debug log message
+  const namespaceIndex = text.indexOf(namespace)
+  if (namespaceIndex !== -1) {
+    text = text.substr(namespaceIndex + namespace.length + 1)
   }
 
   const msMatches = text.match(utils.msRegex)
@@ -141,12 +139,12 @@ const proxyDebugModule = (messages, debugPath) => {
     debugLog.apply(debug, args)
   }
 
-  // new instances are added using "debug.instances.push()"
-  // so we can proxy this method
   // global.cnsl.log('debug object is', debug)
   // global.cnsl.log('debug.enabled is', debug.enabled)
 
   if (Array.isArray(debug.instances)) {
+    // new instances are added using "debug.instances.push()"
+    // so we can proxy this method
     return proxyDebugV3(messages, debug)
   }
 }

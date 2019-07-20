@@ -18,7 +18,7 @@ const execaOptions = {
 
 describe('debug@2', () => {
   // timestamp in the form "new Date().toUTCString()"
-  const defaultTimestamp = 'Sat, 20 Jul 2019 19:10:43 GMT'
+  const defaultTimestamp = 'Sat, 20 Jul 2019 12:34:56 GMT'
 
   it('does not print debug logs when disabled', () => {
     const options = R.mergeDeepRight(execaOptions, {
@@ -67,17 +67,16 @@ describe('debug@2', () => {
 
     return execa(
       'node',
-      ['--require', '../test/print-on-exit', '.'],
+      ['--require', '..', '--require', '../test/print-on-exit', '.'],
       options,
     ).then(result => {
-      console.log(result)
       // replace timestamps produced by "debug" module
       const replacedTimestampts = R.replace(
-        new RegExp(utils.timestampExpression, 'g'),
+        new RegExp(utils.utcTimestampString, 'g'),
         defaultTimestamp,
         result,
       )
-      // snapshot('enabled debug logs', replacedTimestampts)
+      snapshot(replacedTimestampts)
     })
   })
 
