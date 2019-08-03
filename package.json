@@ -48,7 +48,7 @@
     "ramda": "0.26.1",
     "semantic-release": "15.13.18",
     "snap-shot-it": "7.8.0",
-    "stop-only": "3.0.1"
+    "stop-only": "3.1.0"
   },
   "config": {
     "snap-shot-it": {
