@@ -40,7 +40,7 @@
     "common-tags": "1.8.0",
     "debug": "4.1.1",
     "execa-wrap": "1.4.0",
-    "husky": "3.0.7",
+    "husky": "3.0.8",
     "lint-staged": "9.4.0",
     "mocha": "6.2.1",
     "mocha-banner": "1.1.2",
