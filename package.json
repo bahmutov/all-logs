@@ -47,7 +47,7 @@
     "prettier": "1.19.1",
     "ramda": "0.26.1",
     "semantic-release": "15.13.30",
-    "snap-shot-it": "7.9.0",
+    "snap-shot-it": "7.9.1",
     "stop-only": "3.1.0"
   },
   "config": {
