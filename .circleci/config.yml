@@ -5,7 +5,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: cypress/base:12.16.1
+      - image: cypress/base:12.16.2
     steps:
       - checkout
       - node/with-cache:
