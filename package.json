@@ -46,7 +46,7 @@
     "mocha-banner": "1.1.2",
     "prettier": "1.19.1",
     "ramda": "0.32.0",
-    "semantic-release": "15.14.0",
+    "semantic-release": "24.2.9",
     "snap-shot-it": "7.9.10",
     "stop-only": "3.4.4"
   },
